@@ -1,0 +1,1 @@
+export const ROOT_SLUG = '/home-leandro'
