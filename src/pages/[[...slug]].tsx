@@ -1,10 +1,13 @@
 import { GetStaticPaths, GetStaticProps } from "next"
 import Image from "next/image"
 import { useRouter } from "next/router"
-import { IPageContent } from "../../graphql/types"
+import { IPageContent } from "../graphql/types"
 import { ROOT_SLUG } from "../../lib/constants"
 import { getPageContentBySlug } from "../../lib/umbraco-heartcore"
 import { normalizeSlug } from "../../util/normalizer"
+import { Hero } from "@/components/Hero"
+import { TextAndImage } from "@/components/TextAndImage"
+import { UniqueSellingPoints } from "@/components/UniqueSellingPoints"
 
 interface IPageProps {
   content: IPageContent
@@ -18,14 +21,11 @@ export default function Page({ content, preview }: IPageProps) {
 
   return (
     <main>
-      <h1>This is [...slug].tsx</h1>
-
-      <h2>Hero</h2>
-      <p>{content.heroTitle}</p>
-      <p>{content.heroSubtitle}</p>
-      {content.heroImage.cropUrl && (
-        <Image src={content.heroImage.cropUrl} width={400} height={400} alt="" priority />
-      )}
+      <Hero
+        title={content.heroTitle}
+        subtitle={content.heroSubtitle}
+        image={content.heroImage?.cropUrl}
+      />
 
       {content.elements?.length > 0 && (
         <>
@@ -33,14 +33,12 @@ export default function Page({ content, preview }: IPageProps) {
           <ul>
             {content.elements.map(({ title, text, image, showLargeImage }) => (
               <li key={title}>
-                <h4>{title}</h4>
-                <article dangerouslySetInnerHTML={{ __html: text }}></article>
-                {image && showLargeImage && (
-                  <Image src={image.large} width={400} height={400} alt="" />
-                )}
-                {image && !showLargeImage && (
-                  <Image src={image.small} width={200} height={200} alt="" />
-                )}
+                <TextAndImage
+                  title={title}
+                  text={text}
+                  showLargeImage={showLargeImage}
+                  image={image}
+                />
               </li>
             ))}
           </ul>
@@ -48,30 +46,10 @@ export default function Page({ content, preview }: IPageProps) {
       )}
 
       <h2>Unique Selling Points</h2>
-      <h4>{content.uniqueSellingPointsTitle}</h4>
-      {content.uniqueSellingPoints?.length > 0 && (
-        <>
-          <h5>Selling Points</h5>
-          <ul>
-            {content.uniqueSellingPoints.map(point => (
-              <li key={point.title}>
-                <p>{point.title}</p>
-                <p>{point.text}</p>
-                <ul>
-                  {point.link.map(item => (
-                    <li key={item.url}>
-                      <a href={item.url} target={item.target ?? ''}>
-                        {item.name} - {item.type}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-                <Image src={point.image.url} width={200} height={200} alt="" />
-              </li>
-            ))}
-          </ul>
-        </>
-      )}
+      <UniqueSellingPoints
+        title={content.uniqueSellingPointsTitle}
+        sellingPoints={content.uniqueSellingPoints}
+      />
     </main>
   )
 }
