@@ -1,4 +1,4 @@
-import { PAGE_CONTENT_BY_SLUG_QUERY } from "../graphql/queries"
+import { PAGE_CONTENT_BY_SLUG_QUERY } from "../src/graphql/queries"
 
 /**
  * Fetch API
