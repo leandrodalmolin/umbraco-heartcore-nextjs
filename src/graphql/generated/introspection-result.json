@@ -1,0 +1,43 @@
+{
+  "possibleTypes": {
+    "Content": [
+      "Ben",
+      "Blog",
+      "BlogPost",
+      "Frontpage",
+      "Home",
+      "Insight",
+      "Insights",
+      "News",
+      "NewsArticle",
+      "TextAndImage2",
+      "Textpage"
+    ],
+    "Element": [
+      "PageDetails",
+      "SiteSettings",
+      "TextAndImage",
+      "UniqueSellingPoint"
+    ],
+    "ElementsComposition": [
+      "Frontpage",
+      "Textpage"
+    ],
+    "HeroComposition": [
+      "Frontpage",
+      "Textpage"
+    ],
+    "Media": [
+      "File",
+      "Folder",
+      "Image",
+      "UmbracoMediaArticle",
+      "UmbracoMediaAudio",
+      "UmbracoMediaVectorGraphics",
+      "UmbracoMediaVideo"
+    ],
+    "UniqueSellingPointsComposition": [
+      "Frontpage"
+    ]
+  }
+}

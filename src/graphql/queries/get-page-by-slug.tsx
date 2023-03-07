@@ -1,5 +1,7 @@
-export const PAGE_CONTENT_BY_SLUG_QUERY = `
-  query($url: String!) {
+import { graphql } from "../generated"
+
+export const getPageBySlugQuery = graphql(`
+  query GetPageBySlug($url: String!) {
     content(url: $url) {
       ...Hero
       ...UnigueSellingPoints
@@ -48,4 +50,4 @@ export const PAGE_CONTENT_BY_SLUG_QUERY = `
       }
     }
   }
-`
+`)

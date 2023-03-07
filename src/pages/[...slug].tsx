@@ -1,37 +1,43 @@
 import { GetStaticPaths, GetStaticProps } from "next"
-import Image from "next/image"
 import { useRouter } from "next/router"
-import { IPageContent } from "../graphql/types"
 import { ROOT_SLUG } from "../../lib/constants"
-import { getPageContentBySlug } from "../../lib/umbraco-heartcore"
 import { normalizeSlug } from "../../util/normalizer"
 import { Hero } from "@/components/Hero"
 import { TextAndImage } from "@/components/TextAndImage"
-import { UniqueSellingPoints } from "@/components/UniqueSellingPoints"
+import { client } from "../../lib/apollo-client"
+import { getPageBySlugQuery } from "@/graphql/queries/get-page-by-slug"
+import { Textpage } from "@/graphql/generated/graphql"
 
 interface IPageProps {
-  content: IPageContent
+  data: {
+    content: Textpage
+  }
   preview?: boolean
 }
 
-export default function Page({ content, preview }: IPageProps) {
+export default function Page({ data, preview }: IPageProps) {
   const { isFallback } = useRouter()
 
   if (isFallback) return <p>Loading...</p>
 
+  const { content } = data
+
   return (
     <main>
-      <Hero
-        title={content.heroTitle}
-        subtitle={content.heroSubtitle}
-        image={content.heroImage?.cropUrl}
-      />
+      {content.heroTitle && content.heroSubtitle && (
+        <Hero
+          title={content.heroTitle}
+          subtitle={content.heroSubtitle}
+          image={content.heroImage ? String(content.heroImage.cropUrl) : null}
+        />
+      )}
 
-      {content.elements?.length > 0 && (
+      {content.elements && content.elements.length > 0 && (
         <>
           <h2>Elements</h2>
           <ul>
-            {content.elements.map(({ title, text, image, showLargeImage }) => (
+            {/* TODO: Find out how to handle elements types  */}
+            {content.elements.map(({ title, text, image, showLargeImage }: any) => (
               <li key={title}>
                 <TextAndImage
                   title={title}
@@ -44,12 +50,6 @@ export default function Page({ content, preview }: IPageProps) {
           </ul>
         </>
       )}
-
-      <h2>Unique Selling Points</h2>
-      <UniqueSellingPoints
-        title={content.uniqueSellingPointsTitle}
-        sellingPoints={content.uniqueSellingPoints}
-      />
     </main>
   )
 }
@@ -59,24 +59,33 @@ export const getStaticProps: GetStaticProps<any, { slug: [] }> = async ({ params
     ? normalizeSlug(params?.slug)
     : ROOT_SLUG
 
-  const content = await getPageContentBySlug(normalizedSlug, preview) || null
 
-  if (!content) {
+  const { data } = await client.query({
+    query: getPageBySlugQuery,
+    variables: {
+      url: normalizedSlug
+    }
+  })
+
+
+  if (!data.content) {
     return {
       notFound: true
     }
   }
 
   return {
-    props: { content, preview },
+    props: {
+      data,
+      preview
+    },
   }
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
   return {
     paths: [
-      { params: { slug: [] } },
-      { params: { slug: ['home-leandro'] } },
+      { params: { slug: ['home-leandro', 'page-one'] } },
     ],
     fallback: true
   }
