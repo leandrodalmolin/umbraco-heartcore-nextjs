@@ -23,7 +23,7 @@ export default function Page({ data, preview }: IPageProps) {
   const { content } = data
 
   return (
-    <main>
+    <div>
       {content.heroTitle && content.heroSubtitle && (
         <Hero
           title={content.heroTitle}
@@ -33,24 +33,21 @@ export default function Page({ data, preview }: IPageProps) {
       )}
 
       {content.elements && content.elements.length > 0 && (
-        <>
-          <h2>Elements</h2>
-          <ul>
-            {/* TODO: Find out how to handle elements types  */}
-            {content.elements.map(({ title, text, image, showLargeImage }: any) => (
-              <li key={title}>
-                <TextAndImage
-                  title={title}
-                  text={text}
-                  showLargeImage={showLargeImage}
-                  image={image}
-                />
-              </li>
-            ))}
-          </ul>
-        </>
+        <ul>
+          {/* TODO: Find out how to handle elements types  */}
+          {content.elements.map(({ title, text, image, showLargeImage }: any) => (
+            <li key={title}>
+              <TextAndImage
+                title={title}
+                text={text}
+                showLargeImage={showLargeImage}
+                image={image}
+              />
+            </li>
+          ))}
+        </ul>
       )}
-    </main>
+    </div>
   )
 }
 
