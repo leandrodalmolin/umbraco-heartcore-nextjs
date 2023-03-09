@@ -1,9 +1,21 @@
-import { UniqueSellingPointsType } from "@/graphql/types"
+import { LinkType } from "@/graphql/generated/graphql"
 import Image from "next/image"
 
 interface IUniqueSellingPointsProps {
   title: string
-  sellingPoints: UniqueSellingPointsType[]
+  sellingPoints: {
+    title: string
+    text?: string | null
+    link?: {
+      name: string,
+      target?: string | null,
+      type: LinkType,
+      url: string
+    }[]
+    image?: {
+      url: string
+    } | null
+  }[]
 }
 
 export function UniqueSellingPoints({ title, sellingPoints }: IUniqueSellingPointsProps) {
@@ -11,13 +23,13 @@ export function UniqueSellingPoints({ title, sellingPoints }: IUniqueSellingPoin
     <section>
       <h4>{title}</h4>
       {sellingPoints?.length > 0 && (
-        <>
-          <h5>Selling Points</h5>
-          <ul>
-            {sellingPoints.map(point => (
-              <li key={point.title}>
-                <p>{point.title}</p>
-                <p>{point.text}</p>
+        <ul>
+          {sellingPoints.map(point => (
+            <li key={point.title}>
+              <p>{point.title}</p>
+              <p>{point.text}</p>
+
+              {point.link && point.link.length > 0 && (
                 <ul>
                   {point.link.map(item => (
                     <li key={item.url}>
@@ -27,11 +39,14 @@ export function UniqueSellingPoints({ title, sellingPoints }: IUniqueSellingPoin
                     </li>
                   ))}
                 </ul>
+              )}
+
+              {point.image && (
                 <Image src={point.image.url} width={200} height={200} alt="" />
-              </li>
-            ))}
-          </ul>
-        </>
+              )}
+            </li>
+          ))}
+        </ul>
       )}
     </section>
   )

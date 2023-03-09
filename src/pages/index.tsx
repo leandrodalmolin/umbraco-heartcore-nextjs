@@ -50,13 +50,11 @@ export default function Page({ data, preview }: IPageProps) {
       )}
 
       {content.uniqueSellingPointsTitle && content.uniqueSellingPoints && (
-        <>
-          <h2>Unique Selling Points</h2>
-          <UniqueSellingPoints
-            title={content.uniqueSellingPointsTitle}
-            sellingPoints={content.uniqueSellingPoints}
-          />
-        </>
+        // TODO fix type
+        <UniqueSellingPoints
+          title={content.uniqueSellingPointsTitle}
+          sellingPoints={content.uniqueSellingPoints as any}
+        />
       )}
     </div>
   )

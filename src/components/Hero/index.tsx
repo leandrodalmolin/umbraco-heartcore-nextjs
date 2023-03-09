@@ -14,7 +14,7 @@ export function Hero({ title, subtitle, image = null }: IHeroProps) {
         textAlign='center'
         align='center'
         spacing={{ base: 2, md: 4 }}
-        py={{ base: 20, md: 16 }}
+        py={{ base: 10, md: 16 }}
       >
         {image && (
           <Box boxSize={150}>
