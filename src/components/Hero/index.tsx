@@ -1,3 +1,4 @@
+import { Box, Container, Heading, Stack, Text } from "@chakra-ui/react"
 import Image from "next/image"
 
 interface IHeroProps {
@@ -8,11 +9,35 @@ interface IHeroProps {
 
 export function Hero({ title, subtitle, image = null }: IHeroProps) {
   return (
-    <section>
-      <h2>Hero</h2>
-      <p>{title}</p>
-      <p>{subtitle}</p>
-      {image && <Image src={image} width={400} height={400} alt="" priority />}
-    </section>
+    <Container maxW='5xl'>
+      <Stack
+        textAlign='center'
+        align='center'
+        spacing={{ base: 2, md: 4 }}
+        py={{ base: 20, md: 16 }}
+      >
+        {image && (
+          <Box boxSize={150}>
+            <Image src={image} width={150} height={150} alt="" priority />
+          </Box>
+        )}
+
+        <Heading
+          fontSize={{ base: '3xl', sm: '4xl', md: '5xl' }}
+          lineHeight={1.1}
+        >
+          {title}
+        </Heading>
+
+        <Text
+          maxW='3xl'
+          fontSize='xl'
+          fontWeight={600}
+          color='gray.500'
+        >
+          {subtitle}
+        </Text>
+      </Stack>
+    </Container>
   )
 }

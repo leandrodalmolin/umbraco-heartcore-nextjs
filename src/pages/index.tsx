@@ -24,7 +24,7 @@ export default function Page({ data, preview }: IPageProps) {
   const { content } = data
 
   return (
-    <main>
+    <div>
       {content.heroTitle && content.heroSubtitle && (
         <Hero
           title={content.heroTitle}
@@ -61,7 +61,7 @@ export default function Page({ data, preview }: IPageProps) {
           />
         </>
       )}
-    </main>
+    </div>
   )
 }
 
