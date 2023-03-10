@@ -10,18 +10,14 @@ import { getPageBySlugQuery } from "@/graphql/queries/get-page-by-slug"
 import { Frontpage } from "@/graphql/generated/graphql"
 
 interface IPageProps {
-  data: {
-    content: Frontpage
-  }
+  content: Frontpage
   preview?: boolean
 }
 
-export default function Page({ data, preview }: IPageProps) {
+export default function Page({ content, preview }: IPageProps) {
   const { isFallback } = useRouter()
 
   if (isFallback) return <p>Loading...</p>
-
-  const { content } = data
 
   return (
     <div>
@@ -65,14 +61,12 @@ export const getStaticProps: GetStaticProps<any, { slug: [] }> = async ({ params
     ? normalizeSlug(params?.slug)
     : ROOT_SLUG
 
-
   const { data } = await client.query({
     query: getPageBySlugQuery,
     variables: {
       url: normalizedSlug
     }
   })
-
 
   if (!data.content) {
     return {
@@ -82,7 +76,7 @@ export const getStaticProps: GetStaticProps<any, { slug: [] }> = async ({ params
 
   return {
     props: {
-      data,
+      content: data.content,
       preview
     },
   }
